@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+       <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -7,11 +8,9 @@
   <style>
     :root {
       --bg: #020617;
-      --bg-soft: #020617;
       --card: #020617;
       --accent: #22d3ee;
       --accent-soft: rgba(34, 211, 238, 0.12);
-      --accent-strong: rgba(34, 211, 238, 0.4);
       --text: #e5e7eb;
       --muted: #9ca3af;
       --danger: #f97373;
@@ -27,8 +26,7 @@
     }
 
     body {
-      background:
-        radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
+      background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
       color: var(--text);
       min-height: 100vh;
       display: flex;
@@ -41,9 +39,10 @@
       width: 100%;
       max-width: 1200px;
       height: min(680px, 100vh - 32px);
-      background: radial-gradient(circle at top left, rgba(30,64,175,0.28), transparent 55%),
-                  radial-gradient(circle at bottom right, rgba(34,211,238,0.2), transparent 55%),
-                  linear-gradient(145deg, #020617, #020617 55%, #020617);
+      background:
+        radial-gradient(circle at top left, rgba(30,64,175,0.28), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(34,211,238,0.2), transparent 55%),
+        linear-gradient(145deg, #020617, #020617 55%, #020617);
       border-radius: 28px;
       border: 1px solid rgba(148,163,184,0.4);
       box-shadow: 0 40px 120px rgba(15,23,42,0.95);
@@ -73,6 +72,7 @@
       font-weight: 700;
       letter-spacing: 0.06em;
       text-transform: uppercase;
+      animation: floatPulse 4s ease-in-out infinite;
     }
 
     .subtitle {
@@ -89,8 +89,6 @@
       background: rgba(15,23,42,0.7);
       backdrop-filter: blur(10px);
     }
-
-    /* SCENE AREA */
 
     .scene-container {
       flex: 1;
@@ -174,8 +172,6 @@
       color: var(--muted);
     }
 
-    /* PROGRESS LISTS / STEPS */
-
     .steps {
       margin-top: 10px;
       display: grid;
@@ -194,9 +190,11 @@
       transform-origin: left center;
       opacity: 0;
       transform: translateY(12px);
-      animation: riseIn 0.6s forwards;
     }
 
+    .scene.active .step {
+      animation: riseIn 0.6s forwards;
+    }
     .scene.active .step:nth-child(1) { animation-delay: 0.3s; }
     .scene.active .step:nth-child(2) { animation-delay: 0.55s; }
     .scene.active .step:nth-child(3) { animation-delay: 0.8s; }
@@ -230,8 +228,6 @@
       color: var(--muted);
     }
 
-    /* BIG DATA NODES */
-
     .nodes {
       margin-top: 12px;
       display: grid;
@@ -255,9 +251,11 @@
       overflow: hidden;
       opacity: 0;
       transform: scale(0.95) translateY(8px);
-      animation: popIn 0.6s forwards;
     }
 
+    .scene.active .node {
+      animation: popIn 0.6s forwards;
+    }
     .scene.active .node:nth-child(1) { animation-delay: 0.35s; }
     .scene.active .node:nth-child(2) { animation-delay: 0.6s; }
     .scene.active .node:nth-child(3) { animation-delay: 0.85s; }
@@ -273,8 +271,6 @@
       color: var(--muted);
     }
 
-    /* FUTURE / CRITICAL BOXES */
-
     .callout {
       margin-top: 10px;
       padding: 9px 10px;
@@ -285,19 +281,9 @@
       color: var(--muted);
     }
 
-    .callout strong {
-      color: var(--accent);
-    }
-
-    .callout.bad strong {
-      color: var(--danger);
-    }
-
-    .callout.good strong {
-      color: var(--good);
-    }
-
-    /* LOOP DIAGRAM */
+    .callout strong { color: var(--accent); }
+    .callout.bad strong { color: var(--danger); }
+    .callout.good strong { color: var(--good); }
 
     .loop {
       margin-top: 12px;
@@ -334,8 +320,6 @@
       color: var(--accent);
     }
 
-    /* FOOTER / CONTROLS */
-
     .footer {
       margin-top: 6px;
       display: flex;
@@ -356,12 +340,33 @@
       height: 6px;
       border-radius: 999px;
       background: #4b5563;
+      transition: width 0.2s ease, background 0.2s ease;
     }
 
     .dot.active {
       width: 16px;
       border-radius: 999px;
       background: var(--accent);
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav-btn {
+      background: rgba(15,23,42,0.95);
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .nav-btn:hover {
+      border-color: var(--accent);
     }
 
     .kbd {
@@ -375,8 +380,6 @@
     .credit {
       text-align: right;
     }
-
-    /* ANIMATIONS */
 
     @keyframes riseIn {
       to {
@@ -396,11 +399,6 @@
       0%,100% { transform: translateY(0); }
       50% { transform: translateY(-3px); }
     }
-
-    header .title {
-      animation: floatPulse 4s ease-in-out infinite;
-    }
-
   </style>
 </head>
 <body>
@@ -726,9 +724,14 @@
         <div class="dot" data-dot="2"></div>
         <div class="dot" data-dot="3"></div>
       </div>
-      <div>
-        Use <span class="kbd">←</span> <span class="kbd">→</span> to change scene while you narrate.
+
+      <div class="controls">
+        <button class="nav-btn" id="prevBtn">← Previous</button>
+        <button class="nav-btn" id="nextBtn">Next →</button>
+        <span class="kbd">←</span>
+        <span class="kbd">→</span>
       </div>
+
       <div class="credit">
         Built with HTML &amp; CSS • Hosted on GitHub Pages
       </div>
@@ -737,14 +740,19 @@
 
   <script>
     const scenes = Array.from(document.querySelectorAll('.scene'));
-    const dots = Array.from(document.querySelectorAll('.dot'));
+    const dots   = Array.from(document.querySelectorAll('.dot'));
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
     let current = 0;
 
     function showScene(index) {
-      if (index < 0 || index >= scenes.length) return;
+      if (index < 0 || index >= scenes.length || index === current) return;
+
       scenes[current].classList.remove('active');
       dots[current].classList.remove('active');
+
       current = index;
+
       scenes[current].classList.add('active');
       dots[current].classList.add('active');
     }
@@ -756,7 +764,9 @@
         showScene(current - 1);
       }
     });
+
+    nextBtn.addEventListener('click', () => showScene(current + 1));
+    prevBtn.addEventListener('click', () => showScene(current - 1));
   </script>
 </body>
 </html>
-
