@@ -2,16 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Search Engines & Big Data</title>
+  <title>Search Engines × Big Data – Digital World Project</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
-      --bg: #050816;
-      --card: #0f172a;
+      --bg: #020617;
+      --bg-soft: #020617;
+      --card: #020617;
       --accent: #22d3ee;
-      --accent-soft: rgba(34, 211, 238, 0.15);
+      --accent-soft: rgba(34, 211, 238, 0.12);
+      --accent-strong: rgba(34, 211, 238, 0.4);
       --text: #e5e7eb;
       --muted: #9ca3af;
+      --danger: #f97373;
+      --good: #4ade80;
     }
 
     * {
@@ -23,37 +27,52 @@
     }
 
     body {
-      background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
+      background:
+        radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
       color: var(--text);
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      padding: 32px 12px;
+      align-items: center;
+      padding: 16px;
     }
 
     .frame {
-      max-width: 1100px;
       width: 100%;
-      background: linear-gradient(135deg, rgba(15,23,42,0.96), rgba(15,23,42,0.98));
-      border-radius: 24px;
-      border: 1px solid rgba(148,163,184,0.2);
+      max-width: 1200px;
+      height: min(680px, 100vh - 32px);
+      background: radial-gradient(circle at top left, rgba(30,64,175,0.28), transparent 55%),
+                  radial-gradient(circle at bottom right, rgba(34,211,238,0.2), transparent 55%),
+                  linear-gradient(145deg, #020617, #020617 55%, #020617);
+      border-radius: 28px;
+      border: 1px solid rgba(148,163,184,0.4);
       box-shadow: 0 40px 120px rgba(15,23,42,0.95);
-      padding: 28px 24px 20px;
+      padding: 20px 24px 18px;
       position: relative;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 8px;
+      z-index: 2;
+    }
+
+    .title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
 
     .title {
       font-size: 1.5rem;
       font-weight: 700;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
     }
 
     .subtitle {
@@ -63,64 +82,99 @@
 
     .pill {
       font-size: 0.8rem;
-      padding: 6px 10px;
+      padding: 6px 12px;
       border-radius: 999px;
       border: 1px solid rgba(148,163,184,0.4);
       color: var(--muted);
+      background: rgba(15,23,42,0.7);
+      backdrop-filter: blur(10px);
     }
 
-    main {
-      margin-top: 6px;
+    /* SCENE AREA */
+
+    .scene-container {
+      flex: 1;
+      position: relative;
+      margin-top: 4px;
+      overflow: hidden;
+    }
+
+    .scene {
+      position: absolute;
+      inset: 0;
+      padding: 16px 4px 0;
       display: grid;
-      grid-template-columns: 3fr 2fr;
-      gap: 22px;
-      align-items: stretch;
+      grid-template-columns: 1.6fr 1.4fr;
+      gap: 26px;
+      opacity: 0;
+      transform: translateX(40px) scale(0.98);
+      pointer-events: none;
+      transition:
+        opacity 0.5s ease,
+        transform 0.5s ease;
     }
 
-    @media (max-width: 850px) {
-      main {
+    .scene.active {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      pointer-events: auto;
+    }
+
+    @media (max-width: 900px) {
+      .scene {
         grid-template-columns: 1fr;
+        padding-right: 4px;
       }
     }
 
-    .panel {
-      background: radial-gradient(circle at top left, var(--accent-soft), transparent 60%),
-                  radial-gradient(circle at bottom right, rgba(59,130,246,0.12), transparent 65%);
-      border-radius: 18px;
-      padding: 18px 18px 16px;
+    .scene-left, .scene-right {
+      border-radius: 20px;
       border: 1px solid rgba(148,163,184,0.4);
+      background:
+        radial-gradient(circle at top left, var(--accent-soft), transparent 60%),
+        rgba(15,23,42,0.9);
+      padding: 16px 18px 14px;
       position: relative;
       overflow: hidden;
     }
 
-    .panel h2 {
-      font-size: 1.1rem;
+    .scene-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .scene-heading {
+      font-size: 1.25rem;
+      font-weight: 650;
       margin-bottom: 6px;
     }
 
-    .panel p {
+    .scene-body {
       font-size: 0.9rem;
       color: var(--muted);
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
-    .pill-row {
+    .chips {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin: 6px 0 12px;
+      margin-top: 8px;
     }
 
-    .tag {
-      font-size: 0.7rem;
+    .chip {
+      font-size: 0.75rem;
       padding: 3px 8px;
       border-radius: 999px;
-      background: rgba(15,23,42,0.9);
-      border: 1px solid rgba(148,163,184,0.4);
+      border: 1px solid rgba(148,163,184,0.5);
+      background: rgba(15,23,42,0.95);
       color: var(--muted);
     }
 
-    /* TIMELINE / FLOW CARDS */
+    /* PROGRESS LISTS / STEPS */
 
     .steps {
       margin-top: 10px;
@@ -130,22 +184,23 @@
 
     .step {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 10px;
-      padding: 9px 10px;
+      padding: 8px 10px;
       border-radius: 12px;
-      background: rgba(15,23,42,0.9);
-      border: 1px solid rgba(148,163,184,0.35);
+      background: rgba(15,23,42,0.95);
+      border: 1px solid rgba(148,163,184,0.3);
       box-shadow: 0 10px 30px rgba(15,23,42,0.9);
+      transform-origin: left center;
       opacity: 0;
       transform: translateY(12px);
       animation: riseIn 0.6s forwards;
     }
 
-    .step:nth-child(1) { animation-delay: 0.4s; }
-    .step:nth-child(2) { animation-delay: 0.7s; }
-    .step:nth-child(3) { animation-delay: 1.0s; }
-    .step:nth-child(4) { animation-delay: 1.3s; }
+    .scene.active .step:nth-child(1) { animation-delay: 0.3s; }
+    .scene.active .step:nth-child(2) { animation-delay: 0.55s; }
+    .scene.active .step:nth-child(3) { animation-delay: 0.8s; }
+    .scene.active .step:nth-child(4) { animation-delay: 1.05s; }
 
     .step-icon {
       width: 30px;
@@ -161,7 +216,7 @@
       flex-shrink: 0;
     }
 
-    .step-body {
+    .step-main {
       flex: 1;
     }
 
@@ -170,32 +225,31 @@
       font-weight: 600;
     }
 
-    .step-desc {
+    .step-text {
       font-size: 0.78rem;
       color: var(--muted);
-    }
-
-    .arrow {
-      width: 30px;
-      text-align: center;
-      font-size: 0.9rem;
-      color: var(--accent);
     }
 
     /* BIG DATA NODES */
 
     .nodes {
-      margin-top: 10px;
+      margin-top: 12px;
       display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 8px;
+    }
+
+    @media (max-width: 900px) {
+      .nodes {
+        grid-template-columns: 1fr;
+      }
     }
 
     .node {
       font-size: 0.8rem;
       padding: 9px 10px;
       border-radius: 12px;
-      background: rgba(15,23,42,0.9);
+      background: rgba(15,23,42,0.95);
       border: 1px solid rgba(148,163,184,0.35);
       position: relative;
       overflow: hidden;
@@ -204,65 +258,97 @@
       animation: popIn 0.6s forwards;
     }
 
-    .node:nth-child(1) { animation-delay: 0.4s; }
-    .node:nth-child(2) { animation-delay: 0.7s; }
-    .node:nth-child(3) { animation-delay: 1.0s; }
-    .node:nth-child(4) { animation-delay: 1.3s; }
+    .scene.active .node:nth-child(1) { animation-delay: 0.35s; }
+    .scene.active .node:nth-child(2) { animation-delay: 0.6s; }
+    .scene.active .node:nth-child(3) { animation-delay: 0.85s; }
+    .scene.active .node:nth-child(4) { animation-delay: 1.1s; }
 
     .node-label {
       font-weight: 600;
-      margin-bottom: 2px;
+      margin-bottom: 3px;
     }
 
     .node span {
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       color: var(--muted);
     }
 
-    .node::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at top left, rgba(34,211,238,0.28), transparent 60%);
-      opacity: 0;
-      pointer-events: none;
-      animation: sheen 3.5s infinite;
-    }
+    /* FUTURE / CRITICAL BOXES */
 
-    /* FUTURE + LOOP PANEL */
-
-    .future {
+    .callout {
       margin-top: 10px;
       padding: 9px 10px;
       border-radius: 12px;
-      background: rgba(15,23,42,0.95);
+      background: rgba(15,23,42,0.96);
       border: 1px solid rgba(148,163,184,0.35);
       font-size: 0.8rem;
       color: var(--muted);
     }
 
-    .future strong {
+    .callout strong {
       color: var(--accent);
     }
 
-    /* SMALL STATUS BAR */
+    .callout.bad strong {
+      color: var(--danger);
+    }
 
-    .status-bar {
+    .callout.good strong {
+      color: var(--good);
+    }
+
+    /* LOOP DIAGRAM */
+
+    .loop {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      font-size: 0.78rem;
+    }
+
+    @media (max-width: 900px) {
+      .loop {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .loop-item {
+      padding: 7px 9px;
+      border-radius: 12px;
+      border: 1px solid rgba(148,163,184,0.4);
+      background: rgba(15,23,42,0.96);
+      position: relative;
+    }
+
+    .loop-item span {
+      color: var(--muted);
+    }
+
+    .loop-arrow {
       position: absolute;
-      bottom: 8px;
-      left: 24px;
-      right: 24px;
+      right: -8px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.9rem;
+      color: var(--accent);
+    }
+
+    /* FOOTER / CONTROLS */
+
+    .footer {
+      margin-top: 6px;
       display: flex;
       justify-content: space-between;
-      font-size: 0.7rem;
+      align-items: center;
+      font-size: 0.75rem;
       color: var(--muted);
-      opacity: 0.8;
+      z-index: 2;
     }
 
     .dots {
       display: flex;
       gap: 4px;
-      align-items: center;
     }
 
     .dot {
@@ -273,7 +359,7 @@
     }
 
     .dot.active {
-      width: 14px;
+      width: 16px;
       border-radius: 999px;
       background: var(--accent);
     }
@@ -283,6 +369,11 @@
       border: 1px solid rgba(148,163,184,0.6);
       padding: 1px 6px;
       font-size: 0.7rem;
+      margin-left: 4px;
+    }
+
+    .credit {
+      text-align: right;
     }
 
     /* ANIMATIONS */
@@ -301,15 +392,9 @@
       }
     }
 
-    @keyframes sheen {
-      0% { opacity: 0; transform: translateX(-40%); }
-      35% { opacity: 0.45; transform: translateX(40%); }
-      100% { opacity: 0; transform: translateX(120%); }
-    }
-
     @keyframes floatPulse {
       0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-4px); }
+      50% { transform: translateY(-3px); }
     }
 
     header .title {
@@ -321,125 +406,357 @@
 <body>
   <div class="frame">
     <header>
-      <div>
+      <div class="title-block">
         <div class="title">Search Engines × Big Data</div>
         <div class="subtitle">How every query powers the algorithms of the digital world</div>
       </div>
-      <div class="pill">Digital World • Draft</div>
+      <div class="pill">
+        Digital World • Draft • [Your Name]
+      </div>
     </header>
 
-    <main>
-      <!-- LEFT: SEARCH ENGINES -->
-      <section class="panel">
-        <h2>How a Search Engine Thinks</h2>
-        <p>
-          A search engine is a system that <strong>crawls</strong> the web, 
-          <strong>indexes</strong> pages, and <strong>ranks</strong> them 
-          to answer our questions in milliseconds.
-        </p>
+    <div class="scene-container">
+      <!-- SCENE 0: INTRO -->
+      <section class="scene active" data-scene="0">
+        <div class="scene-left">
+          <div class="scene-label">Scene 1 · Overview</div>
+          <div class="scene-heading">From simple queries to massive datasets</div>
+          <p class="scene-body">
+            In this project I explore the link between <strong>search engines</strong> and 
+            <strong>big data</strong>. Every time we look something up online, we are not just 
+            finding information – we are also <strong>creating</strong> data that feeds back 
+            into the system.
+            <br /><br />
+            My focus is on two questions: <strong>how</strong> search engines work at a 
+            technical level, and <strong>how</strong> big data turns billions of small actions 
+            into patterns, predictions and personalised results.
+          </p>
 
-        <div class="pill-row">
-          <span class="tag">Crawlers</span>
-          <span class="tag">Index</span>
-          <span class="tag">Ranking algorithms</span>
-          <span class="tag">Ads</span>
-        </div>
-
-        <div class="steps">
-          <div class="step">
-            <div class="step-icon">1</div>
-            <div class="step-body">
-              <div class="step-title">Crawl</div>
-              <div class="step-desc">Bots follow links and download pages from across the web.</div>
-            </div>
-            <div class="arrow">➜</div>
-          </div>
-
-          <div class="step">
-            <div class="step-icon">2</div>
-            <div class="step-body">
-              <div class="step-title">Index</div>
-              <div class="step-desc">Content is cleaned, analysed and stored in a massive, searchable index.</div>
-            </div>
-            <div class="arrow">➜</div>
-          </div>
-
-          <div class="step">
-            <div class="step-icon">3</div>
-            <div class="step-body">
-              <div class="step-title">Rank</div>
-              <div class="step-desc">Algorithms score pages using relevance, freshness and authority signals.</div>
-            </div>
-            <div class="arrow">➜</div>
-          </div>
-
-          <div class="step">
-            <div class="step-icon">4</div>
-            <div class="step-body">
-              <div class="step-title">Respond & Learn</div>
-              <div class="step-desc">Results, clicks and dwell time become new data to improve the next search.</div>
-            </div>
+          <div class="chips">
+            <span class="chip">Information retrieval</span>
+            <span class="chip">User behaviour</span>
+            <span class="chip">Machine learning</span>
+            <span class="chip">Ethics &amp; future</span>
           </div>
         </div>
 
-        <div class="future" style="margin-top:12px;">
-          <strong>Future insight:</strong> Over the next decade, large language models will turn search 
-          into <em>conversation</em>, returning answers instead of lists of links — but this makes 
-          transparency and source attribution much more difficult.
+        <div class="scene-right">
+          <div class="scene-label">Key idea</div>
+          <div class="scene-heading">A feedback loop in the digital world</div>
+          <p class="scene-body">
+            Search engines and big data form a <strong>feedback loop</strong>:
+            search systems need data to improve their rankings, and big data 
+            systems depend on constant user activity – like queries and clicks –
+            to stay accurate and up to date.
+          </p>
+
+          <div class="callout">
+            <strong>Core claim:</strong> The same data that makes search feel smarter
+            and more personalised can also introduce risks – such as bias,
+            surveillance, and over-reliance on a small number of platforms.
+          </div>
         </div>
       </section>
 
-      <!-- RIGHT: BIG DATA -->
-      <section class="panel">
-        <h2>How Big Data Powers It</h2>
-        <p>
-          Every query, click and scroll becomes part of <strong>big data</strong>: 
-          huge, messy datasets that machine learning models use to spot patterns and make predictions.
-        </p>
+      <!-- SCENE 1: SEARCH ENGINES -->
+      <section class="scene" data-scene="1">
+        <div class="scene-left">
+          <div class="scene-label">Scene 2 · Search engines</div>
+          <div class="scene-heading">How a search engine thinks</div>
+          <p class="scene-body">
+            A search engine is a system that <strong>crawls</strong> the web,
+            <strong>indexes</strong> pages and <strong>ranks</strong> them to answer
+            our questions in milliseconds. Modern engines such as Google or Bing
+            run this pipeline continuously, at web scale.
+          </p>
 
-        <div class="pill-row">
-          <span class="tag">Volume</span>
-          <span class="tag">Variety</span>
-          <span class="tag">Velocity</span>
-          <span class="tag">Veracity</span>
+          <div class="chips">
+            <span class="chip">Crawlers</span>
+            <span class="chip">Index</span>
+            <span class="chip">Ranking algorithms</span>
+            <span class="chip">Ads &amp; revenue</span>
+          </div>
+
+          <div class="steps">
+            <div class="step">
+              <div class="step-icon">1</div>
+              <div class="step-main">
+                <div class="step-title">Crawl</div>
+                <div class="step-text">
+                  Automated bots follow links and download pages from across 
+                  the web, discovering new and updated content.
+                </div>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-icon">2</div>
+              <div class="step-main">
+                <div class="step-title">Index</div>
+                <div class="step-text">
+                  Pages are cleaned, analysed and stored in a massive, 
+                  searchable index – similar to a constantly updated library 
+                  catalogue.
+                </div>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-icon">3</div>
+              <div class="step-main">
+                <div class="step-title">Rank</div>
+                <div class="step-text">
+                  Algorithms score pages using relevance, freshness, user 
+                  signals and measures of authority such as links.
+                </div>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-icon">4</div>
+              <div class="step-main">
+                <div class="step-title">Respond &amp; learn</div>
+                <div class="step-text">
+                  The user sees a ranked list of results. Their clicks and
+                  behaviour then become new data to refine future rankings.
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="nodes">
-          <div class="node">
-            <div class="node-label">Collect</div>
-            <span>Search logs, location, clicks, devices, and behaviour streams.</span>
-          </div>
-          <div class="node">
-            <div class="node-label">Store</div>
-            <span>Distributed databases and cloud warehouses keep petabytes of data online.</span>
-          </div>
-          <div class="node">
-            <div class="node-label">Analyse</div>
-            <span>ML models learn to rank, recommend, and detect anomalies.</span>
-          </div>
-          <div class="node">
-            <div class="node-label">Act</div>
-            <span>Personalised results, ads and predictions are delivered in real time.</span>
-          </div>
-        </div>
+        <div class="scene-right">
+          <div class="scene-label">Impact &amp; near future</div>
+          <div class="scene-heading">From ten blue links to conversational answers</div>
+          <p class="scene-body">
+            Search engines have transformed how we access information, but
+            they have also created entire industries around <strong>SEO</strong> 
+            and targeted advertising.
+          </p>
 
-        <div class="future">
-          <strong>Critical view:</strong> Big data makes search more accurate and personalised, 
-          but it also raises questions of privacy, bias and energy use in huge data centres. 
-          Future regulation and greener infrastructure will be crucial.
+          <div class="callout good">
+            <strong>Positive impact:</strong> Information is more accessible 
+            than ever before, supporting education, research and everyday 
+            decision making.
+          </div>
+
+          <div class="callout bad" style="margin-top:8px;">
+            <strong>Challenge:</strong> Over time, a small number of ranking
+            algorithms have gained huge power to decide <em>what</em> we see,
+            which can affect what we believe and which sources we trust.
+          </div>
+
+          <div class="callout" style="margin-top:8px;">
+            <strong>Next 10 years:</strong> Large language models will make 
+            search feel more like a conversation, returning AI-generated 
+            answers instead of just lists of links. This will make 
+            transparency and source attribution even more important.
+          </div>
         </div>
       </section>
-    </main>
 
-    <div class="status-bar">
+      <!-- SCENE 2: BIG DATA -->
+      <section class="scene" data-scene="2">
+        <div class="scene-left">
+          <div class="scene-label">Scene 3 · Big data</div>
+          <div class="scene-heading">Turning traces into patterns</div>
+          <p class="scene-body">
+            <strong>Big data</strong> refers to extremely large and complex 
+            datasets that are too big for traditional tools. They are often 
+            described using the four Vs: <strong>volume</strong>, 
+            <strong>variety</strong>, <strong>velocity</strong> and 
+            <strong>veracity</strong>.
+            <br /><br />
+            Search engines produce ideal big data: billions of queries, clicks 
+            and interactions, generated in real time by users all over the world.
+          </p>
+
+          <div class="chips">
+            <span class="chip">Volume</span>
+            <span class="chip">Variety</span>
+            <span class="chip">Velocity</span>
+            <span class="chip">Veracity</span>
+          </div>
+
+          <div class="nodes">
+            <div class="node">
+              <div class="node-label">Collect</div>
+              <span>Search logs, clicks, location data, device details and other behaviour signals.</span>
+            </div>
+            <div class="node">
+              <div class="node-label">Store</div>
+              <span>Distributed databases and cloud warehouses keep petabytes of data online.</span>
+            </div>
+            <div class="node">
+              <div class="node-label">Analyse</div>
+              <span>Machine-learning models learn to rank results, recommend content and detect spam or anomalies.</span>
+            </div>
+            <div class="node">
+              <div class="node-label">Act</div>
+              <span>Personalised results, adverts and predictions are delivered back to users in real time.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="scene-right">
+          <div class="scene-label">Impact &amp; risks</div>
+          <div class="scene-heading">Personalisation with a price</div>
+          <p class="scene-body">
+            Big data allows companies to move from one-size-fits-all content 
+            to <strong>highly personalised</strong> experiences, recommendations 
+            and adverts.
+          </p>
+
+          <div class="callout good">
+            <strong>Benefit:</strong> People discover information and products 
+            that are more relevant to their needs, and organisations can make 
+            decisions based on evidence instead of intuition.
+          </div>
+
+          <div class="callout bad" style="margin-top:8px;">
+            <strong>Risk:</strong> At the same time, large-scale data collection 
+            raises concerns about privacy, consent, algorithmic bias and the 
+            environmental impact of huge data centres.
+          </div>
+
+          <div class="callout" style="margin-top:8px;">
+            <strong>Future:</strong> Over the next decade, stricter data 
+            protection laws and the rise of generative AI will force 
+            organisations to rethink how they collect, store and justify their 
+            use of big data.
+          </div>
+        </div>
+      </section>
+
+      <!-- SCENE 3: FEEDBACK LOOP & FUTURE -->
+      <section class="scene" data-scene="3">
+        <div class="scene-left">
+          <div class="scene-label">Scene 4 · Feedback loop</div>
+          <div class="scene-heading">Search engines as big data machines</div>
+          <p class="scene-body">
+            Search engines do not just <em>consume</em> big data – they also 
+            <em>produce</em> it. Every query, impression and click becomes a 
+            labelled data point that can be used to train the next generation 
+            of ranking and recommendation models.
+          </p>
+
+          <div class="loop">
+            <div class="loop-item">
+              <strong>1. Search</strong><br />
+              <span>User types a query and sees results.</span>
+              <div class="loop-arrow">➜</div>
+            </div>
+            <div class="loop-item">
+              <strong>2. Behaviour</strong><br />
+              <span>Clicks, dwell time and scroll depth are recorded.</span>
+              <div class="loop-arrow">➜</div>
+            </div>
+            <div class="loop-item">
+              <strong>3. Big data</strong><br />
+              <span>Signals are stored and used to train models.</span>
+              <div class="loop-arrow">➜</div>
+            </div>
+            <div class="loop-item">
+              <strong>4. Smarter search</strong><br />
+              <span>Updated models change what future users see.</span>
+            </div>
+          </div>
+
+          <div class="callout" style="margin-top:10px;">
+            <strong>Key insight:</strong> A small tweak deep inside the model
+            can subtly change what millions of people read and watch, which
+            gives search companies significant social and political influence.
+          </div>
+        </div>
+
+        <div class="scene-right">
+          <div class="scene-label">Looking 10 years ahead</div>
+          <div class="scene-heading">Towards conversational, regulated AI search</div>
+          <p class="scene-body">
+            In the next decade, it is likely that:
+          </p>
+
+          <div class="steps">
+            <div class="step">
+              <div class="step-icon">A</div>
+              <div class="step-main">
+                <div class="step-title">Search becomes conversational</div>
+                <div class="step-text">
+                  People will expect answers written in natural language, with
+                  models synthesising information from many sources.
+                </div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-icon">B</div>
+              <div class="step-main">
+                <div class="step-title">Data use faces more scrutiny</div>
+                <div class="step-text">
+                  Laws such as GDPR and new AI regulations will demand clearer
+                  explanations of how personal data and training data are used.
+                </div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-icon">C</div>
+              <div class="step-main">
+                <div class="step-title">Design becomes an ethical choice</div>
+                <div class="step-text">
+                  Designers and engineers will need to balance relevance and
+                  personalisation with fairness, privacy and energy costs.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout" style="margin-top:10px;">
+            <strong>Conclusion:</strong> Search engines and big data are not
+            neutral technologies. They are powerful tools that will need
+            careful governance if we want a digital world that is both
+            intelligent and trustworthy.
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="footer">
       <div class="dots">
-        <span class="dot active"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
+        <div class="dot active" data-dot="0"></div>
+        <div class="dot" data-dot="1"></div>
+        <div class="dot" data-dot="2"></div>
+        <div class="dot" data-dot="3"></div>
       </div>
-      <div>Hint: talk through each step as it animates.</div>
-      <div><span class="kbd">GitHub Pages</span></div>
+      <div>
+        Use <span class="kbd">←</span> <span class="kbd">→</span> to change scene while you narrate.
+      </div>
+      <div class="credit">
+        Built with HTML &amp; CSS • Hosted on GitHub Pages
+      </div>
     </div>
   </div>
+
+  <script>
+    const scenes = Array.from(document.querySelectorAll('.scene'));
+    const dots = Array.from(document.querySelectorAll('.dot'));
+    let current = 0;
+
+    function showScene(index) {
+      if (index < 0 || index >= scenes.length) return;
+      scenes[current].classList.remove('active');
+      dots[current].classList.remove('active');
+      current = index;
+      scenes[current].classList.add('active');
+      dots[current].classList.add('active');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') {
+        showScene(current + 1);
+      } else if (e.key === 'ArrowLeft') {
+        showScene(current - 1);
+      }
+    });
+  </script>
 </body>
 </html>
+
